@@ -22,7 +22,7 @@ const addBookHandler = (request, h) => {
       status: 'success',
       message: 'Buku berhasil ditambahkan',
       data: {
-        noteId: id,
+        bookId: id,
       },
     });
     response.code(201);
@@ -46,13 +46,13 @@ const getAllBooksHandler = () => ({
 const getBookByIdHandler = (request, h) => {
   const { id } = request.params;
 
-  const note = books.filter((n) => n.id === id)[0];
+  const book = books.filter((n) => n.id === id)[0];
 
-  if (note !== undefined) {
+  if (book !== undefined) {
     return {
       status: 'success',
       data: {
-        note,
+        book,
       },
     };
   }
