@@ -1,4 +1,7 @@
 /* eslint-disable linebreak-style */
+/* eslint-disable radix */
+/* eslint-disable no-undef */
+/* eslint-disable max-len */
 /* eslint-disable object-curly-newline */
 const { nanoid } = require('nanoid');
 const books = require('./books');
@@ -7,20 +10,30 @@ const addBookHandler = (request, h) => {
   const { name, year, author, summary, publisher, pageCount, readPage, reading } = request.payload;
 
   const id = nanoid(16);
-  const createdAt = new Date().toISOString();
-  const updatedAt = createdAt;
+  const finished = (pageCount === readPage) ? 'false' : 'true';
+  const insertedAt = new Date().toISOString();
+  const updatedAt = insertedAt;
 
   const newBook = {
-    id, name, year, author, summary, publisher, pageCount, readPage, reading, createdAt, updatedAt,
+    id, name, year, author, summary, publisher, pageCount, readPage, finished, reading, insertedAt, updatedAt,
   };
   books.push(newBook);
 
-  const isSuccess = books.filter((book) => book.id === id).length > 0;
+  let messages;
+  let isSuccess;
+  if (name.length === 0) {
+    messages = 'Gagal menambahkan buku. Mohon isi nama buku';
+  } else if (parseInt(`${readPage}`) > parseInt(`${pageCount}`)) {
+    messages = 'Gagal menambahkan buku. readPage tidak boleh lebih besar dari pageCount';
+  } else {
+    isSuccess = 'true';
+    messages = 'Buku berhasil ditambahkan';
+  }
 
   if (isSuccess) {
     const response = h.response({
       status: 'success',
-      message: 'Buku berhasil ditambahkan',
+      message: messages,
       data: {
         bookId: id,
       },
@@ -28,10 +41,16 @@ const addBookHandler = (request, h) => {
     response.code(201);
     return response;
   }
-  const response = h.response({
-    status: 'fail',
-    message: 'Buku gagal ditambahkan',
-  });
+
+  if (!isSuccess) {
+    const response = h.response({
+      status: 'fail',
+      message: messages,
+    });
+    response.code(400);
+    return response;
+  }
+
   response.code(500);
   return response;
 };
