@@ -90,29 +90,28 @@ const editBookByIdHandler = (request, h) => {
 
   const index = books.findIndex((book) => book.id === bookId);
   if (index !== -1) {
-    books[index] = {
-      ...books[index],
-      name,
-      year,
-      author,
-      summary,
-      publisher,
-      pageCount,
-      readPage,
-      reading,
-      updatedAt,
-    };
-
     let isSuccess;
     let responseMessage;
     if (!name) {
       isSuccess = false;
-      responseMessage = 'Gagal menambahkan buku. Mohon isi nama buku';
+      responseMessage = 'Gagal memperbarui buku. Mohon isi nama buku';
     } else if (parseInt(`${readPage}`) > parseInt(`${pageCount}`)) {
       isSuccess = false;
-      responseMessage = 'Gagal menambahkan buku. readPage tidak boleh lebih besar dari pageCount';
+      responseMessage = 'Gagal memperbarui buku. readPage tidak boleh lebih besar dari pageCount';
     } else {
       isSuccess = true;
+      books[index] = {
+        ...books[index],
+        name,
+        year,
+        author,
+        summary,
+        publisher,
+        pageCount,
+        readPage,
+        reading,
+        updatedAt,
+      };
     }
     if (isSuccess === true) {
       const response = h.response({
