@@ -7,7 +7,7 @@ const routes = [
   {
     method: 'GET',
     path: '/',
-    handler: (request, h) => 'Homepage',
+    handler: () => 'Homepage',
   },
   {
     method: 'POST',
@@ -27,17 +27,17 @@ const routes = [
   {
     method: 'PUT',
     path: '/books/{bookId}',
-    handler: () => editBookByIdHandler,
+    handler: editBookByIdHandler,
   },
   {
     method: 'DELETE',
     path: '/books/{bookId}',
-    handler: () => deleteBookByIdHandler,
+    handler: deleteBookByIdHandler,
   },
   {
     method: '*',
     path: '/{any*}',
-    handler: (request, h) => 'Halaman tidak ditemukan',
+    handler: () => 'Halaman tidak ditemukan',
   },
 ];
 
