@@ -24,7 +24,7 @@ const addBookHandler = (request, h) => {
   if (!name) {
     isSuccess = false;
     responseMessage = 'Gagal menambahkan buku. Mohon isi nama buku';
-  } else if (parseInt(`${readPage}`) > parseInt(`${pageCount}`)) {
+  } else if (readPage > pageCount) {
     isSuccess = false;
     responseMessage = 'Gagal menambahkan buku. readPage tidak boleh lebih besar dari pageCount';
   } else {
@@ -96,7 +96,7 @@ const editBookByIdHandler = (request, h) => {
     if (!name) {
       isSuccess = false;
       responseMessage = 'Gagal memperbarui buku. Mohon isi nama buku';
-    } else if (parseInt(`${readPage}`) > parseInt(`${pageCount}`)) {
+    } else if (readPage > pageCount) {
       isSuccess = false;
       responseMessage = 'Gagal memperbarui buku. readPage tidak boleh lebih besar dari pageCount';
     } else {
