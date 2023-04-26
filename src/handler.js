@@ -58,11 +58,15 @@ const addBookHandler = (request, h) => {
 const getAllBooksHandler = () => ({
   status: 'success',
   data: {
-    books,
+    books: books.map((book) => ({
+      id: book.id,
+      name: book.name,
+      publisher: book.publisher,
+    })),
   },
 });
 
-const getBookByIdHandler = (request, h) => {
+function getBookByIdHandler(request, h) {
   const { id } = request.params;
 
   const book = books.filter((n) => n.id === id)[0];
@@ -81,7 +85,7 @@ const getBookByIdHandler = (request, h) => {
   });
   response.code(404);
   return response;
-};
+}
 
 const editBookByIdHandler = (request, h) => {
   const { id } = request.params;
