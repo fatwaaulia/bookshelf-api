@@ -21,7 +21,7 @@ const addBookHandler = (request, h) => {
 
   let messages;
   let isSuccess;
-  if (name.length === 0) {
+  if (!name) {
     messages = 'Gagal menambahkan buku. Mohon isi nama buku';
   } else if (parseInt(`${readPage}`) > parseInt(`${pageCount}`)) {
     messages = 'Gagal menambahkan buku. readPage tidak boleh lebih besar dari pageCount';
@@ -104,12 +104,40 @@ const editBookByIdHandler = (request, h) => {
       reading,
       updatedAt,
     };
-    const response = h.response({
-      status: 'success',
-      message: 'Buku berhasil diperbarui',
-    });
-    response.code(200);
-    return response;
+
+    let messages;
+    let isSuccess;
+    if (name.length === 0) {
+      messages = 'Gagal menambahkan buku. Mohon isi nama buku';
+    } else if (parseInt(`${readPage}`) > parseInt(`${pageCount}`)) {
+      messages = 'Gagal menambahkan buku. readPage tidak boleh lebih besar dari pageCount';
+    } else if (index === -1) {
+      messages = 'Gagal memperbarui buku. Id tidak ditemukan';
+    } else {
+      isSuccess = 'true';
+      messages = 'Buku berhasil diperbarui';
+    }
+
+    if (isSuccess) {
+      const response = h.response({
+        status: 'success',
+        message: messages,
+        data: {
+          bookId: id,
+        },
+      });
+      response.code(201);
+      return response;
+    }
+
+    if (!isSuccess) {
+      const response = h.response({
+        status: 'fail',
+        message: messages,
+      });
+      response.code(400);
+      return response;
+    }
   }
   const response = h.response({
     status: 'fail',
