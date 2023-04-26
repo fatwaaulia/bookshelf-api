@@ -1,4 +1,5 @@
 /* eslint-disable linebreak-style */
+/* eslint-disable no-unneeded-ternary */
 /* eslint-disable radix */
 /* eslint-disable no-undef */
 /* eslint-disable max-len */
@@ -10,7 +11,7 @@ const addBookHandler = (request, h) => {
   const { name, year, author, summary, publisher, pageCount, readPage, reading } = request.payload;
 
   const id = nanoid(16);
-  const finished = (pageCount === readPage) ? 'true' : 'false';
+  const finished = (pageCount === readPage) ? true : false;
   const insertedAt = new Date().toISOString();
   const updatedAt = insertedAt;
 
