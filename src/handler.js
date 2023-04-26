@@ -17,23 +17,24 @@ const addBookHandler = (request, h) => {
   const newBook = {
     id, name, year, author, summary, publisher, pageCount, readPage, finished, reading, insertedAt, updatedAt,
   };
-  books.push(newBook);
 
-  let messages;
   let isSuccess;
+  let responseMessage;
   if (!name) {
-    messages = 'Gagal menambahkan buku. Mohon isi nama buku';
+    isSuccess = false;
+    responseMessage = 'Gagal menambahkan buku. Mohon isi nama buku';
   } else if (parseInt(`${readPage}`) > parseInt(`${pageCount}`)) {
-    messages = 'Gagal menambahkan buku. readPage tidak boleh lebih besar dari pageCount';
+    isSuccess = false;
+    responseMessage = 'Gagal menambahkan buku. readPage tidak boleh lebih besar dari pageCount';
   } else {
-    isSuccess = 'true';
-    messages = 'Buku berhasil ditambahkan';
+    isSuccess = true;
+    books.push(newBook);
   }
 
-  if (isSuccess) {
+  if (isSuccess === true) {
     const response = h.response({
       status: 'success',
-      message: messages,
+      message: 'Buku berhasil ditambahkan',
       data: {
         bookId: id,
       },
@@ -41,17 +42,11 @@ const addBookHandler = (request, h) => {
     response.code(201);
     return response;
   }
-
-  if (!isSuccess) {
-    const response = h.response({
-      status: 'fail',
-      message: messages,
-    });
-    response.code(400);
-    return response;
-  }
-
-  response.code(500);
+  const response = h.response({
+    status: 'fail',
+    message: responseMessage,
+  });
+  response.code(400);
   return response;
 };
 
